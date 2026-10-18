@@ -10,6 +10,8 @@ Design an interactive, responsive prototype for the Uzbekistan real-estate agenc
 
 The intended commercial effect is that an agency can quickly understand and experience the value. The design must not imply that a UI prototype, AI feature, or integration has already produced a measurable increase in revenue.
 
+“A product that sells itself” is a requirement to make value easy to experience and explain, not a promise of viral growth. The UI should shorten time to first value, let an agency see a real workflow outcome, and show evidence from its own data. Referrals, public claims, and ROI figures remain hypotheses until validated.
+
 ### Agreed constraints
 
 - Pilot market: Uzbekistan; start with Tashkent as a working hypothesis, not an established market fact.
@@ -37,7 +39,9 @@ Where sources disagree, preserve the reference and classify the item as one of: 
 - Make records and transitions understandable: lead, client, one or more client requests, property, match, selection shared, viewing, follow-up/task, deal, and commission are linked but not collapsed into one ambiguous record.
 - Include an agency-level view of unresolved work and a personal agent-level action queue.
 - Demonstrate migration/activation, core team controls, and the deferred directions clearly enough to communicate how they fit without letting them displace the core loop.
+- Design a self-guided path from preview/demo to first useful outcome and evidence of value; include trial/plan decisions only to the depth supported by the pilot sales model.
 - Make critical success, empty, warning, error, cancel, permission, and no-match states visible in the prototype plan.
+- Include weak-network/offline and privacy/data-portability states where they affect trust or the ability to continue work.
 
 ### Out of scope for this design phase
 
@@ -83,9 +87,9 @@ Global search is available from the shell only when it leads to results for in-s
 
 `Incoming enquiry → triage/owner → client request → property match → reviewed selection → viewing → outcome/follow-up → deal/pipeline visibility`
 
-1. **Capture:** create a lead manually or from a pasted message/demo source. Preserve source and arrival context. If AI extraction is shown, populate a draft and expose uncertainty; the agent edits/confirms before saving.
+1. **Capture:** create a lead manually or from text, a short agent-recorded voice note, or an optional screenshot/photo in a demo source. Preserve source and arrival context. Any extraction is an editable draft with visible uncertainty; the agent confirms before saving. Do not imply automatic call recording or guaranteed RU/UZ recognition.
 2. **Triage:** show response status, owner, time context/SLA state, and a useful action. Assignment and response remain human-controlled in the prototype.
-3. **Understand the need:** link a lead to a client and one or more requests. Edit budget/currency, purpose, property type, area, rooms, timeline, constraints, and unknowns without silently filling gaps.
+3. **Understand the need:** link a lead to a client and one or more requests. Capture text, a short agent-recorded voice note, or an optional screenshot/photo; show extraction as an editable draft with source and uncertainty and keep a manual fallback. Edit budget/currency, purpose, property type, area, rooms, timeline, constraints, and unknowns without silently filling gaps.
 4. **Match:** require hard constraints to remain visible; show exact and near matches separately; explain why each property appears, what does not match, and when availability/price was last checked.
 5. **Prepare a client-facing selection:** review exactly which fields the client will see, remove properties, and simulate confirmed sharing. Record the sent selection in the lead/request history. Never expose internal-only data.
 6. **Arrange a viewing:** choose client/request, property, time, and agent; show conflict, confirmation, move, and cancel paths. The demo must not imply that a message or calendar event was delivered externally.
@@ -99,28 +103,29 @@ This is a normalized design map, not a claim that all source scores or problem s
 | Design ID | Recurring pain cluster | UI response to design | Priority | Source anchors |
 |---|---|---|---|---|
 | UZ-01 | Enquiries scattered across channels; delayed first response; missed calls; unclear ownership | Lead/Inbox queue with source, received time, response state, owner, SLA cue, manual capture and next action | P0 | `product.md` §5, §7, §10; `_unsort/5.md` #3/#5/#6/#28; `_unsort/12.md` #5/#16 |
-| UZ-02 | Client facts and agreements are lost in chats or memory; duplicate/repeated questioning | Client profile with linked requests, interaction history, source/time for extracted facts, editable fields and deduplication review | P0 | `product.md` §5, §7, §10; `_unsort/5.md` #7/#41; `_unsort/12.md` #16/#20 |
+| UZ-02 | Client facts and agreements are lost in chats or memory; voice notes are hard to search; duplicate/repeated questioning | Client profile with linked requests and searchable interaction/voice-note history; extracted facts retain source/time and remain editable; duplicates require review | P0 | `product.md` §5, §7, §10; `_unsort/5.md` #7/#41; `_unsort/12.md` #16/#20 |
 | UZ-03 | Unqualified or misrouted enquiries consume agent time | Short qualification flow, missing-information prompts, human-controlled assignment and transparent priority reasons | P0/P1 | `product.md` §7, §10, §13; `_unsort/5.md` #4/#28; lead-source concept docs |
 | UZ-04 | Warm leads, promises, renewals, and post-viewing follow-ups are forgotten | Today task queue, due/overdue states, follow-up composer as draft, completion/snooze and reactivation list | P0 | `product.md` §7, §10, §30; `_unsort/5.md` #21/#22/#42 |
-| UZ-05 | Adding or finding a property is manual; forwarded posts disappear | Quick add, structured object form, source provenance, import/forwarded-content review and clear save outcome | P0/P1 | `product.md` §7, §11, §29; `_unsort/5.md` #10/#11; `LivePropertyDatabase.md` |
-| UZ-06 | Duplicated, stale, sold/rented, or price-changed objects damage trust | Property status, last-checked timestamp, source and responsible party, duplicate review, stale warning and safe deactivation | P0 | `product.md` §5, §7, §11, §28; `_unsort/5.md` #12/#13/#14; `_unsort/12.md` #15 |
+| UZ-05 | Adding or finding a property is manual; forwarded posts disappear; listing information is chaotic across Telegram sources | Quick add, structured object form, source provenance, import/forwarded-content review and clear save outcome | P0/P1 | `product.md` §7, §11, §29; `_unsort/5.md` #10/#11; `_unsort/12.md` #6; `LivePropertyDatabase.md` |
+| UZ-06 | Duplicated, stale, sold/rented, fake, or price-changed objects damage trust | Property status, last-checked timestamp, source and responsible party, duplicate/verification review, stale warning and safe deactivation | P0 | `product.md` §5, §7, §11, §28; `_unsort/5.md` #12/#13/#14/#39; `_unsort/12.md` #15/#38/#40 |
 | UZ-07 | District/landmark naming varies; matching is slow, opaque, or repeats rejected options | Search aliases, hard vs soft constraints, exact/near results, reason chips, mismatch and freshness explanations, past selection status | P0 | `product.md` §7, §11, §30, §42; `_unsort/5.md` #9/#15/#16; `HumanInTheLoop.md` |
 | UZ-08 | Selections are hard to present; agent cannot see what client received | Client preview, removable options, privacy-safe fields, simulated share confirmation and selection history | P0 | `product.md` §7, §30, §42; `MVP.md`; `HumanInTheLoop.md`; `implementation-gap-audit.md` |
 | UZ-09 | Viewing coordination takes effort; conflicts/no-shows and outcomes are not captured | Create/reschedule/cancel flow, conflict state, reminder preview, outcome and next-step branch | P0 | `product.md` §7, §30; `_unsort/5.md` #19/#20; `LeadPilotConcept.md` |
 | UZ-10 | Deal stages, negotiation terms, and loss reasons are unclear or live outside the system | Deal detail, configurable stage summary, required/optional transition fields, history and loss reason | P0/P1 | `product.md` §7, §12, §30; `_unsort/5.md` #23/#34; `implementation-gap-audit.md` |
-| UZ-11 | Owner cannot see real outcomes; deals/base may leave with agent; team onboarding takes too long | Distinct agent Today and owner Pulse, drill-down, role-aware record states, team setup and reversible handover | P0/P1 | `product.md` §5, §7, §13, §20; `_unsort/5.md` #24/#25/#26/#38/#44; `_unsort/12.md` #3/#4/#7/#25 |
-| UZ-12 | Commission splits, partner promises, and actual payments are disputed or opaque | Deal-linked expected vs approved vs received commission, partner agreement summary, revision reason and confirmation history | P1 | `product.md` §5, §7, §14, §30; `_unsort/5.md` #36/#37; `_unsort/12.md` #9/#10/#12/#26 |
-| UZ-13 | Owner acquisition/exclusivity, direct-source discovery, and owner communication are difficult | Owner/listing workspace and evidence of work/updates as a later agency capability; market radar only after source/legal validation | P1/P2 | `product.md` §7, §11, §28; `_unsort/5.md` #2/#17/#18; `DealRadarConcept.md`; `LivePropertyDatabase.md` |
-| UZ-14 | Manual posting, multilingual content, ad limits, and campaign ROI are burdensome | Draft listing copy and explicit copy/export/share steps; source/campaign attribution and ROI only when inputs are defined | P1/P2 | `product.md` §11, §15, §22; `_unsort/5.md` #1/#30/#32/#33/#40; `FunctionalMap.md` |
+| UZ-11 | Owner cannot see real outcomes; deals/base may leave with agent; team onboarding and manual KPI/motivation take too long | Distinct agent Today and owner Pulse, drill-down, role-aware record states, team setup, reversible handover and transparent performance definitions | P0/P1 | `product.md` §5, §7, §13, §20; `_unsort/5.md` #24/#25/#26/#27/#38/#44; `_unsort/12.md` #3/#4/#7/#25 |
+| UZ-12 | Commission splits, partner promises, and actual payments are disputed or opaque | Deal-linked expected vs approved vs received commission, partner agreement summary, revision reason and confirmation history | P1 | `product.md` §5, §7, §14, §30; `_unsort/5.md` #36; `_unsort/12.md` #9/#10/#12/#26 |
+| UZ-13 | Owner acquisition/exclusivity, direct-source discovery, unwanted intermediary calls, and owner communication are difficult | Owner/listing workspace, contact-sharing limits and evidence of work/updates as later agency capabilities; market radar only after source/legal validation | P1/P2 | `product.md` §7, §11, §28; `_unsort/5.md` #2/#17/#18; `_unsort/12.md` #1/#17/#29/#41; `DealRadarConcept.md`; `LivePropertyDatabase.md` |
+| UZ-14 | Manual posting/reposting, multilingual content, ad limits, and campaign ROI are burdensome | Draft listing copy and explicit copy/export/share steps; source/campaign attribution and ROI only when inputs are defined | P1/P2 | `product.md` §11, §15, §22; `_unsort/5.md` #1/#30/#32/#33/#40; `_unsort/12.md` #11/#22/#24; `FunctionalMap.md` |
 | UZ-15 | Calls are not logged; coaching and agreement capture are weak | Call/interaction history and consent-aware manual note entry first; recording/transcription and QA as gated later concepts | P1/P2 | `product.md` §9, §10, §13; `_unsort/5.md` #8/#29; `_unsort/12.md` #20; call/AI concepts |
-| UZ-16 | Unclear legal process, document coordination, client trust, or property due diligence | Deal checklist, document status, source/verification label, support/next step; never state that the app verifies legality or replaces a professional | P1/P2 | `product.md` §18, §30, §37; `_unsort/12.md` #8/#14/#19/#21/#23/#27/#31/#33/#34/#35/#43–45 |
-| UZ-17 | Cash flow, deposits, owner/renter operations, mortgage, or post-sale service lack coordination | Separate CRM notes/tasks may support an in-scope transaction; accounting, payments, rental operations and consumer finance are separate products/phases | P2 / separate direction | `product.md` §14, §20; `_unsort/12.md` #13/#18/#28/#31/#36/#37/#41/#44/#46; `IjarachiPRD.md`; `KvartiramniPRD.md` |
-| UZ-18 | Broad marketplace, MLS, valuation, developer inventory, and market-data problems | Keep visible in a deferred/validation register; no top-level CRM navigation until a separate product decision and evidence justify it | P2 / separate direction | `product.md` §20–21, §28; `_unsort/12.md` #1/#2/#12/#17/#30/#32/#38–42; `ValoraPRD.md`; `SmartChessPRD.md`; `DealRadarConcept.md` |
+| UZ-16 | Unclear legal process, service agreements, document coordination, client trust, fake listings, or property due diligence | Deal checklist, document status, source/verification label and consent context; never state that the app verifies legality or replaces a professional | P1/P2 | `product.md` §18, §30, §37; `_unsort/5.md` #35/#39; `_unsort/12.md` #8/#14/#19/#21/#23/#27/#31/#33/#34/#35/#38/#43–45 |
+| UZ-17 | Cash flow, deposits, owner/renter operations, mortgage follow-through, or post-sale service lack coordination | Separate CRM notes/tasks may support an in-scope transaction; accounting, payments, rental operations and consumer finance are separate products/phases | P2 / separate direction | `product.md` §14, §20; `_unsort/5.md` #22/#37/#47; `_unsort/12.md` #13/#18/#28/#31/#36/#37/#44/#46; `IjarachiPRD.md`; `KvartiramniPRD.md` |
+| UZ-18 | Broad marketplace, MLS, valuation, developer inventory, and market-data problems, including comparable prices by area/building and developer price lists | Keep visible in a deferred/validation register; no top-level CRM navigation until a separate product decision and evidence justify it | P2 / separate direction | `product.md` §20–21, §28; `_unsort/5.md` #31/#46; `_unsort/12.md` #12/#30/#32/#39/#42; `ValoraPRD.md`; `SmartChessPRD.md`; `DealRadarConcept.md` |
 | UZ-19 | Newcomer education, certification, regulation, and changing local rules | Represent as a source-linked checklist or help placeholder only after the current rule is verified; legal advice/certification is not a CRM promise | P1/P2 / validation gate | `product.md` §18, §37; `_unsort/5.md` #45; `_unsort/12.md` #8/#14/#19 |
+| UZ-20 | The product's first value is hard to experience or explain; referrals/recommendations are not systematically captured; agencies lack a measurable lead-acquisition loop | Guided demo or sample workspace, short activation checklist, first completed lead-to-next-step outcome, evidence card based on the agency's own baseline, source/referral capture and team invite; measure lead flow/referrals before adding incentives or promising acquisition | P0 activation / P1 growth validation | `product.md` §19, §22, §25, §29, §33; `_unsort/5.md` #43; `_unsort/2.md` #43; `_unsort/12.md` #2; `PropCopilotPRD.md`; `AiRealtorAssistantValidationPlan.md`; `CloserOsProductMarketFitBlueprint.md` |
 
 ### Source-to-scope rule
 
-Pain clusters UZ-01–UZ-12 are the agency CRM pilot's main design territory. UZ-13–UZ-16 may be represented as a thin workflow or later capability according to verified agency demand. UZ-17–UZ-19 include valuable pains, but their source concepts span owners, consumers, landlords, developers, and regulatory products; do not silently treat these as committed CRM screens. Every source pain row in the final plan must nevertheless receive a disposition: design now, design later, separate direction, needs evidence, or out of scope with reason.
+Pain clusters UZ-01–UZ-12 are the agency CRM pilot's main design territory. UZ-13–UZ-16 and UZ-20 may be represented as a thin workflow or later capability according to verified agency demand. UZ-17–UZ-19 include valuable pains, but their source concepts span owners, consumers, landlords, developers, and regulatory products; do not silently treat these as committed CRM screens. Every unique pain statement found across the supplied documents must receive a disposition: design now, design later, separate direction, needs evidence, or out of scope with reason. Preserve every source reference, including repeated statements, without double-counting them as separately validated pains.
 
 ## 8. Screen and flow inventory
 
@@ -131,21 +136,21 @@ The prototype already contains Today, Leads, Match, Calendar, Objects, Deals, Te
 1. **Today (agent queue):** urgent/new leads, due work, today's viewings, leads without next action; filters and empty state.
 2. **Leads / Inbox:** list states (new, assigned, awaiting reply, active, overdue, closed); source, owner, response time and fast actions.
 3. **Lead detail:** client/request links, interaction timeline, notes, next action, response draft, handoff/assignment and role-sensitive fields.
-4. **Quick capture / request extraction:** paste text or enter manually; extraction draft, uncertainty, edit/confirm/reject, invalid/missing values, create lead and preserve linkage.
+4. **Quick capture / request extraction:** paste text, enter manually, attach a demo image, or record a short note; extraction draft, uncertainty, edit/confirm/reject, invalid/missing values, create lead and preserve linkage. Voice/image processing may be simulated; do not imply call recording or guaranteed recognition quality.
 5. **Client and request editor:** multiple requests per person, explicit budget/currency, area aliases, preferences, unknowns, history and duplicate warning.
 6. **Matching:** exact vs near matches, filters, reason/exclusion, stale/unverified state, no results and change request.
-7. **Property detail / freshness:** price/currency, availability, source, last checked, responsible party, internal vs client-visible data.
+7. **Property capture/detail/freshness:** manual or approved-file capture with optional photos; price/currency, availability, source, last checked, responsible party, internal vs client-visible data. Image/voice extraction remains a draft for human confirmation.
 8. **Selection preview and share record:** selected properties, client-safe preview, remove/return to match, simulated confirmation, history record and failure/retry state.
 9. **Viewing create/detail:** client/property/agent/date, conflict, confirm, move/cancel, reminder preview, attendance/no-show/outcome and follow-up.
 10. **Tasks and follow-up:** create from a lead/showing, draft message, due/snoozed/overdue/completed, no-contact-permission state.
 11. **Deal detail and pipeline transition:** linked entities, stage, timeline, next step, loss reason, negotiation terms and documents summary. Commission is visible as expected/unapproved until confirmed.
 12. **Owner Pulse:** new/overdue/unassigned leads, missing next steps, stale properties, viewings without outcome, deals without update; every metric drills into records.
-13. **Minimum onboarding shell:** demo/skip path, agency/user basics, first record or sample data. Full migration wizard remains in P1; do not block a prototype demo on external integrations.
+13. **Minimum onboarding and activation:** demo/skip path, agency/user basics, first record or sample data, short checklist to a lead with owner/next step or a reviewed property selection, and a value summary based on labeled demo or agency data. Full migration wizard remains in P1; do not block a prototype demo on external integrations.
 
 ### P1 — adoption and agency operations
 
 14. **Full onboarding and data migration:** choose data type (contacts/leads/properties/active deals), map columns, preview, validation, duplicates, dry-run, confirmation, result log and safe repeat/cancel behavior.
-15. **Team and access:** invite, pending/accepted/error states, roles and data scope explanation, suspend/revoke/handover preview.
+15. **Account, team and access:** sign-up/agency creation or accept invitation, invite pending/accepted/error states, roles and data scope explanation, suspend/revoke/handover preview. Production authentication remains an engineering dependency.
 16. **Lead routing settings:** manual and simple round-robin setup, no-eligible-agent and failed assignment states; advanced AI routing is not assumed.
 17. **Commission workspace:** transparent calculation inputs, expected/approved/received states, correction reason, partner split and confirmation trail.
 18. **Partner workflow (limited):** share only approved transaction fields, state purpose/access, agree/confirm terms, show history and revoke future access.
@@ -154,6 +159,9 @@ The prototype already contains Today, Leads, Match, Calendar, Objects, Deals, Te
 21. **Search:** leads/clients/properties/deals with loading/no-result/permission/ambiguous-name states and RU/UZ spelling behavior.
 22. **Owner/listing workspace:** owner contact, authorization/source, listing status, update history and safe reminders; only if pilot discovery confirms this as a frequent agency job.
 23. **Document checklist:** transaction-linked document list and status. Templates, signatures, legal conclusions and government checks remain excluded unless separately validated.
+24. **Privacy and data control:** consent/legal-basis status where relevant, role/access summary, export request, deletion/retention request, confirmation and completion/error states. Legal wording and retention rules require review; the UI does not decide legal eligibility.
+25. **Commercial entry and subscription (conditional):** public demo/preview handoff, sign-up or request-pilot route, trial status, included limits, plan comparison, upgrade/contact-sales route, payment result/retry, cancellation/export and data-retention explanation. Keep any marketing landing separate from CRM navigation. Design only the minimal path supported by the pilot sales model; do not build a speculative billing system or invent prices.
+26. **Referral and proof sharing (validation-first):** record referral source and provide an optional team/customer introduction path. Rewards, public counters and claims stay out until economics and consent are tested.
 
 ### P2 / separate product directions
 
@@ -176,6 +184,8 @@ For each P0 screen, and for the relevant P1 setup flows, specify at minimum:
 - permission denied, unassigned, revoked, or partially visible data;
 - save, cancel, undo/confirmation, retry, and unsaved changes;
 - duplicate warning without automatic merge;
+- offline/weak-network banner, locally queued draft/action, retry, sync result and conflict-resolution state; never show a queued action as externally delivered;
+- consent/source context, export/delete/retention request status, and audit-friendly confirmation for sensitive actions;
 - date/time conflict, reschedule, cancellation, and no-show;
 - simulated/unavailable integration and user-controlled fallback;
 - mobile layout, keyboard-safe form behavior, and desktop density;
@@ -191,6 +201,8 @@ Do not make a destructive or externally visible action the only primary CTA. Alw
 - Show local date/time and Asia/Tashkent context consistently; include time zone when showing external calendar placeholders.
 - Make UZS vs USD explicit on every price/budget; preserve entered currency and show conversion only with source/time and user acknowledgment if later designed.
 - Support varied device widths and low-attention, on-the-go usage; never require a long form before the agent can save a lead or note.
+- Show weak-network/offline mode, pending local actions and synchronization status. Do not imply that every action is safely queued unless that behavior is included in the engineering contract.
+- Preserve consent and source context for contact/marketing actions; give an understandable export and data-deletion request path, subject to legal/retention rules.
 - Do not state current law, certification, consent, escrow, tax, or integration availability as fact solely because a concept document mentions it. Such claims require dated authoritative verification before becoming UI copy.
 
 ## 11. Design principles and reusable patterns
@@ -213,22 +225,36 @@ Use P0/P1/P2 as order of design depth, not a promise about engineering release d
 - **P1:** reduce adoption friction and make the agency workflow operable: robust import, roles/team, routing, partner/commission basics, analytics drill-down, settings, and confirmed owner/listing workflows.
 - **P2:** integrations or automation with material external, data-quality, legal, or cold-start dependencies; separate products remain separate until evidence supports expansion.
 
-There is one sequencing tension to resolve explicitly in the final plan: `product.md` treats import as MVP readiness, while the agreed design sequence places full import in P1. Reconcile by designing a P0 first-use/demo path and minimum manual capture, while treating the full robust migration wizard as P1 design depth and an explicit pilot-readiness gate. If the first agency's onboarding depends on import, elevate the minimum viable importer before that pilot; do not silently call the product pilot-ready without it.
+### Self-selling and growth logic
+
+Treat self-selling as a testable sequence, not a brand claim:
+
+1. **Preview:** the user understands the core scenario without connecting an unsupported channel or uploading sensitive data.
+2. **Activate:** guide the agent to one useful outcome with demo data or a small safe import/manual entry; measure time to first completed workflow instead of asserting a fixed target from another concept document.
+3. **Prove:** show only pilot data with definitions and a comparison baseline; distinguish activity, response, viewings, deals, and received commission. Never turn sample data into a testimonial or ROI promise.
+4. **Expand:** help the manager invite the team after one agent sees value; test repeated team use and willingness to pay without founder-led training.
+5. **Refer:** track recommendation source first. Introduce discounts/rewards only after checking economics, abuse, and consent. A shareable property selection is a client-service function, not by itself a SaaS referral loop.
+
+The first three steps belong in the P0 prototype story; subscription/pricing and referral mechanics are P1 validation surfaces, and incentive automation is P2 until validated. Solo-vs-Team packaging remains a discovery gate because source documents disagree about the first buyer.
+
+There are sequencing tensions to resolve explicitly in the final plan: (1) `product.md` treats import as MVP readiness, while the agreed design sequence places full import in P1; design a P0 first-use/demo path and minimum manual capture, while treating the robust migration wizard as P1 design depth and an explicit pilot-readiness gate; elevate its minimum viable slice if the first agency depends on import. (2) The corpus proposes Solo and Team buyers and different packaging models; use agency/team as the pilot assumption but test the Solo entry path before locking pricing or navigation. (3) Subscription lifecycle concepts are much broader than a pilot needs; present only the minimum trial/upgrade/exit path consistent with the validated sales model.
 
 ## 13. Handoff acceptance criteria
 
 The later designer plan is complete when:
 
-1. Every source pain row in the two numbered catalogs and every additional unique pilot-relevant pain found in the source corpus has a source-qualified ID and disposition.
+1. All 47 rows of `_unsort/5.md`, all 46 rows of `_unsort/12.md`, and every unique pain statement in the remaining source corpus have a source-qualified ID and explicit disposition; no catalog ID is unmatched, and duplicate statements retain their references without being double-counted.
 2. Every pilot-core pain maps to a screen/scenario, a role, a priority, and observable acceptance criteria.
 3. P0 flows are clickable from start to result using linked demo records, not isolated mock screens.
 4. The screen inventory distinguishes existing routes, redesign/refinement, and genuinely new surfaces.
 5. Critical states and responsive behavior are specified for P0; all important P1 setup/permission/error states are included.
-6. Every simulated API, AI operation, send, import, calendar update, or permission check is labeled as simulated in the prototype or handed off as an explicit dependency.
-7. The client selection preview and partner view disclose no internal-only fields.
-8. Language, currency, data freshness, source attribution, roles, and metric definitions are unambiguous enough for a developer to build against.
-9. Deferred features remain visible in a separate register with their pain, reason, dependency, and evidence needed to revisit.
-10. Usability validation scenarios and a developer handoff checklist are included; passing a visual review alone is not treated as validating the product hypothesis.
+6. The first-value activation flow and evidence card use a declared activation event, a baseline, and real/synthetic-data labels; no fictional ROI or testimonial is used.
+7. Weak-network/offline queue, retry, sync and conflict states are specified for critical agent actions.
+8. Every simulated API, AI operation, send, import, calendar update, payment, or permission check is labeled as simulated or handed off as an explicit dependency.
+9. The client selection preview and partner view disclose no internal-only fields; consent/source and export/delete controls have an explicit UX disposition.
+10. Language, currency, data freshness, source attribution, roles, and metric definitions are unambiguous enough for a developer to build against.
+11. Deferred features remain visible in a separate register with their pain, reason, dependency, and evidence needed to revisit.
+12. Usability validation scenarios and a developer handoff checklist are included; passing a visual review alone is not treated as validating the product hypothesis.
 
 ## 14. Decisions captured; no further discovery questions required to draft the plan
 
@@ -239,6 +265,8 @@ The later designer plan is complete when:
 - Support a responsive web prototype, not a native app or Telegram Mini App, unless a separate decision changes that scope.
 - Include end-to-end client selection and viewing flows; simulated sends remain visibly simulated.
 - Keep full migration, advanced routing, partner network, outbound AI, scraping, financial automation, legal verification, and adjacent products at the priority/dependency levels above.
+- Include a testable first-value and proof-of-value path; do not assume self-serve conversion, referral virality, or a specific Solo/Team packaging model.
+- Include cross-cutting offline/sync and privacy/export/delete states; implementation and legal behavior remain engineering/legal gates.
 - Record uncertain market, legal, AI-quality, and integration assumptions as validation gates inside the plan instead of blocking the document on more interviews now.
 
 ## 15. Source set for the plan
@@ -250,6 +278,10 @@ Primary local references:
 - `docs/superpowers/plans/2026-10-16-objects-workflow.md`
 - `docs/superpowers/plans/2026-10-16-lead-capture-workflow.md`
 - `docs/superpowers/specs/2026-10-16-objects-workflow-design.md`
+- External `Product/DesignConcept.md` (subscription/UI concept only, not the pilot's approved scope)
+- External `Product/AiRealtorAssistantValidationPlan.md` (activation/referral hypotheses)
+- External `Product/PropCopilotPRD.md` (time-to-value hypothesis)
+- External `Product/CloserOsProductMarketFitBlueprint.md` (activation/referral concepts in an alternate product context)
 
 External document sets supplied for this task:
 
