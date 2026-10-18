@@ -255,6 +255,8 @@ The later designer plan is complete when:
 10. Language, currency, data freshness, source attribution, roles, and metric definitions are unambiguous enough for a developer to build against.
 11. Deferred features remain visible in a separate register with their pain, reason, dependency, and evidence needed to revisit.
 12. Usability validation scenarios and a developer handoff checklist are included; passing a visual review alone is not treated as validating the product hypothesis.
+13. The plan is a self-contained cloud handoff for collaborators who may not have the source folder: no local filesystem paths, file links, or dependency on opening another local document. It carries the relevant product context, findings, decisions, assumptions, screen/state requirements, pain-to-solution crosswalk, and validation gates inside the plan itself.
+14. Source provenance is preserved inside the plan using human-readable document titles, version/date where known, and stable source pain IDs/section labels; provenance must not become a local link that a remote collaborator cannot open. Summarize the evidence needed to understand each decision instead of asking the reader to consult a local file.
 
 ## 14. Decisions captured; no further discovery questions required to draft the plan
 
@@ -288,4 +290,4 @@ External document sets supplied for this task:
 - `/Users/shohsanam/Desktop/design/prompt/documents/Projects/SmartAgent/docs/_unsort/*.md`
 - `/Users/shohsanam/Desktop/design/prompt/documents/Projects/SmartAgent/docs/Product/*.md`
 
-The final plan should include a source manifest grouped by product direction and a pain-ID crosswalk rather than copying every competing concept into the CRM design.
+The final plan should include a source manifest grouped by product direction and a pain-ID crosswalk rather than copying every competing concept into the CRM design. The plan itself must remain portable and self-contained: include the useful source context and rationale in the plan, identify provenance by title/version/date and pain IDs, and do not add local filesystem paths or links to source documents or this specification.
