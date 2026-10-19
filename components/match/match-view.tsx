@@ -4,19 +4,21 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Check, Minus, Plus, Send, TriangleAlert } from 'lucide-react'
 import { PropertyCard } from '@/components/kalit/property-card'
+import { ActivationProofView } from '@/components/activation/activation-proof-view'
+import { buildActivationProof, prepareActivationSelection } from '@/lib/activation'
 import { useLeadWorkspace } from '@/components/leads/lead-workspace'
 import { useObjectWorkspace } from '@/components/objects/object-workspace'
 import { cn } from '@/lib/utils'
 import { districts, type Need } from '@/lib/data'
 import { formatNeedBudget } from '@/lib/format'
-import { recordSelectionActivity } from '@/lib/objects/activity'
 import { filterSelectedMatchIds, matchListings, type ListingMatchResult } from '@/lib/objects/matching'
 
-export function MatchView({ initialNeed, leadId }: { initialNeed: Need; leadId?: string }) {
+export function MatchView({ initialNeed, leadId, activation = false }: { initialNeed: Need; leadId?: string; activation?: boolean }) {
   const [need, setNeed] = useState<Need>(initialNeed)
   const [selected, setSelected] = useState<string[]>([])
   const [selectedLeadId, setSelectedLeadId] = useState(leadId ?? '')
-  const [prepared, setPrepared] = useState(false)
+  const [preparedMatches, setPreparedMatches] = useState<ListingMatchResult[] | null>(null)
+  const prepared = preparedMatches !== null
   const { listingViews, appendListingEvents } = useObjectWorkspace()
   const { leads, updateLead } = useLeadWorkspace()
   const { exact, near } = matchListings(need, listingViews)
@@ -24,7 +26,7 @@ export function MatchView({ initialNeed, leadId }: { initialNeed: Need; leadId?:
   const targetLead = leads.find((lead) => lead.id === selectedLeadId)
 
   function resetCriteria() {
-    setPrepared(false)
+    setPreparedMatches(null)
     setSelected([])
   }
 
@@ -37,24 +39,28 @@ export function MatchView({ initialNeed, leadId }: { initialNeed: Need; leadId?:
   }
 
   function toggleSelected(id: string) {
-    setPrepared(false)
+    setPreparedMatches(null)
     setSelected((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]))
   }
 
   function prepareSelection() {
-    const currentSelection = filterSelectedMatchIds(selected, { exact, near })
-    if (!targetLead || !currentSelection.length) return
-    const result = recordSelectionActivity(targetLead, listingViews.map((view) => view.listing), currentSelection)
-    if (!result.listingEvents.length) return
+    if (!targetLead) return
+    const result = prepareActivationSelection(targetLead, listingViews.map((view) => view.listing), selected, { exact, near })
+    if (!result) return
     updateLead(result.lead)
     appendListingEvents(result.listingEvents)
-    setPrepared(true)
+    setPreparedMatches(result.selectedMatches)
   }
 
   const budgetStep = need.budgetCurrency === 'UZS'
     ? need.deal === 'rent' ? 500_000 : 5_000_000
     : need.deal === 'rent' ? 50 : 5000
   const selectedCount = visibleSelected.length
+
+  if (activation && preparedMatches && targetLead) {
+    const proof = buildActivationProof(targetLead, preparedMatches)
+    if (proof) return <ActivationProofView proof={proof} onBack={() => setPreparedMatches(null)} />
+  }
 
   return (
     <div className="flex flex-col gap-8">

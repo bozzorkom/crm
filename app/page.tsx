@@ -2,7 +2,7 @@ import { currentUser } from '@/lib/data'
 import { Composer } from '@/components/today/composer'
 import { AttentionList } from '@/components/today/attention-list'
 import { TodayGreeting } from '@/components/today/today-greeting'
-import { ShowingsToday, StatsStrip } from '@/components/today/today-sections'
+import { ShowingsToday } from '@/components/today/today-sections'
 
 export default function TodayPage() {
   return (
@@ -11,8 +11,6 @@ export default function TodayPage() {
         <TodayGreeting firstName={currentUser.firstName} />
         <Composer />
       </section>
-
-      <StatsStrip />
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px] [&>*]:min-w-0">
         <AttentionList />

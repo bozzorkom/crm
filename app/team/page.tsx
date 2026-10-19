@@ -8,6 +8,7 @@ import { CommissionList } from '@/components/team/commission-list'
 import { splitCommission as split } from '@/lib/commission'
 import { commissions, currentUser, partners, teamMembers } from '@/lib/data'
 import { formatUsd } from '@/lib/format'
+import { AgencyAccessPreview } from '@/components/shell/agency-access-preview'
 
 export const metadata: Metadata = { title: 'Команда и комиссии — Kalit' }
 
@@ -23,6 +24,7 @@ export default function TeamPage() {
   ]
 
   return (
+    <AgencyAccessPreview title="Команда и комиссии" description="Работа команды, распределение лидов и ожидаемые комиссии.">
     <div className="flex w-full flex-col gap-8 px-4 py-8 md:px-8 md:py-10">
       <PageHeader
         title="Команда и комиссии"
@@ -47,8 +49,8 @@ export default function TeamPage() {
 
       <CommissionList />
 
-      <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <section aria-labelledby="team" className="flex flex-col gap-3">
+      <div className="grid min-w-0 gap-8 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <section aria-labelledby="team" className="flex min-w-0 flex-col gap-3">
           <div className="flex items-baseline justify-between">
             <h2 id="team" className="text-base font-semibold">
               Команда
@@ -119,7 +121,7 @@ export default function TeamPage() {
           </div>
         </section>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-6">
           <section aria-labelledby="routing" className="flex flex-col gap-3 rounded-2xl border bg-background p-4">
             <div className="flex items-center gap-2">
               <Repeat className="size-4" aria-hidden="true" />
@@ -166,5 +168,6 @@ export default function TeamPage() {
         </div>
       </div>
     </div>
+    </AgencyAccessPreview>
   )
 }

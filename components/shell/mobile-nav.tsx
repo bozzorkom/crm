@@ -2,37 +2,34 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ChartNoAxesColumn as BarChart3, Sparkles, UsersRound } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { currentUser } from '@/lib/data'
 import { Logo } from './logo'
-import { isActive, navItems } from './nav-items'
+import { isActive, getNavigationForRole } from './nav-items'
 import { useLeadWorkspace } from '@/components/leads/lead-workspace'
+import { DemoRoleSelect } from './demo-role-select'
+import { useDemoRole } from './demo-role-provider'
 
 export function MobileHeader() {
+  const { role } = useDemoRole()
+  const utilityLinks = getNavigationForRole(role).filter((item) => !item.mobile)
+
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-xl md:hidden">
       <Link href="/" aria-label="Kalit — на главную">
         <Logo />
       </Link>
       <div className="flex items-center gap-1">
-        {[
-          { href: '/match', label: 'Подбор', Icon: Sparkles },
-          { href: '/team', label: 'Команда', Icon: UsersRound },
-          { href: '/analytics', label: 'Аналитика', Icon: BarChart3 },
-        ].map(({ href, label, Icon }) => (
+        {utilityLinks.map(({ href, label, icon: Icon }) => (
           <Link
             key={href}
             href={href}
             aria-label={label}
-            className="flex size-9 items-center justify-center rounded-full text-muted-foreground hover:bg-accent"
+            className="flex size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-accent"
           >
             <Icon className="size-[18px]" />
           </Link>
         ))}
-        <span className="flex size-8 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
-          {currentUser.initials}
-        </span>
+        <DemoRoleSelect variant="compact" />
       </div>
     </header>
   )
@@ -41,15 +38,16 @@ export function MobileHeader() {
 export function MobileTabBar() {
   const pathname = usePathname()
   const { leads } = useLeadWorkspace()
+  const { role } = useDemoRole()
   const newLeadCount = leads.filter((lead) => lead.status === 'new').length
-  const tabs = navItems.filter((item) => item.mobile)
+  const tabs = getNavigationForRole(role).filter((item) => item.mobile)
 
   return (
     <nav
       aria-label="Основная навигация"
       className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden"
     >
-      <ul className="grid grid-cols-5">
+      <ul className="grid" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
         {tabs.map((item) => {
           const active = isActive(pathname, item.href)
           const Icon = item.icon

@@ -1,6 +1,8 @@
 'use client'
 
 import { useLeadWorkspace } from '@/components/leads/lead-workspace'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 
 export function TodayGreeting({ firstName }: { firstName: string }) {
   const { leads } = useLeadWorkspace()
@@ -15,6 +17,9 @@ export function TodayGreeting({ firstName }: { firstName: string }) {
       <p className="text-muted-foreground text-pretty">
         {waiting} {noun} {verb} ответа. Вставьте запрос клиента, чтобы собрать черновик карточки и посмотреть подходящие объекты.
       </p>
+      <Link href="/start" className="inline-flex items-center gap-1.5 text-sm font-medium underline decoration-border underline-offset-4 transition-colors hover:text-muted-foreground">
+        Впервые? Посмотреть короткий пример<ArrowRight className="size-3.5" aria-hidden="true" />
+      </Link>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/shell/page-header'
+import { AgencyAccessPreview } from '@/components/shell/agency-access-preview'
 
 export const metadata: Metadata = { title: 'Аналитика — Kalit' }
 
@@ -39,8 +40,9 @@ export default function AnalyticsPage() {
   const maxLeads = Math.max(...sources.map((s) => s.leads))
 
   return (
+    <AgencyAccessPreview title="Аналитика" description="Исторические показатели команды за выбранный период.">
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 md:px-8 md:py-10">
-      <PageHeader title="Аналитика" description="Последние 30 дней · все агенты" />
+      <PageHeader title="Аналитика" description="Демо-данные · последние 30 дней · все агенты" />
 
       <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border bg-border lg:grid-cols-4">
         {kpis.map((kpi) => (
@@ -142,5 +144,6 @@ export default function AnalyticsPage() {
         </div>
       </section>
     </div>
+    </AgencyAccessPreview>
   )
 }

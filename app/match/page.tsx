@@ -17,11 +17,13 @@ export default async function MatchPage({
   const need = needFromSearchParams(params) ?? defaultNeed
   const rawLeadId = params.leadId
   const leadId = Array.isArray(rawLeadId) ? rawLeadId[0] : rawLeadId
+  const flow = Array.isArray(params.flow) ? params.flow[0] : params.flow
+  const activation = flow === 'activation' && Boolean(leadId)
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 md:px-8 md:py-10">
       <PageHeader title="Подбор" description="Свежие объявления с разрешением на показ, отсортированные по совпадению с запросом клиента." />
-      <MatchView key={`${JSON.stringify(need)}-${leadId ?? ''}`} initialNeed={need} leadId={leadId} />
+      <MatchView key={`${JSON.stringify(need)}-${leadId ?? ''}-${activation}`} initialNeed={need} leadId={leadId} activation={activation} />
     </div>
   )
 }

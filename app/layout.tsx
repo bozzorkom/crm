@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/shell/sidebar'
 import { MobileHeader, MobileTabBar } from '@/components/shell/mobile-nav'
 import { LeadWorkspaceProvider } from '@/components/leads/lead-workspace'
 import { ObjectWorkspaceProvider } from '@/components/objects/object-workspace'
+import { DemoRoleProvider } from '@/components/shell/demo-role-provider'
 import './globals.css'
 
 const geist = Geist({ subsets: ['latin', 'cyrillic'], variable: '--font-geist' })
@@ -37,18 +38,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ru" className={`${geist.variable} ${geistMono.variable}`}>
       <body className="antialiased">
-        <ObjectWorkspaceProvider>
-          <LeadWorkspaceProvider>
-            <div className="flex min-h-dvh">
-              <Sidebar />
-              <div className="flex min-w-0 flex-1 flex-col">
-                <MobileHeader />
-                <main className="flex-1 pb-20 md:pb-0">{children}</main>
+        <DemoRoleProvider>
+          <ObjectWorkspaceProvider>
+            <LeadWorkspaceProvider>
+              <div className="flex min-h-dvh">
+                <Sidebar />
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <MobileHeader />
+                  <main className="flex-1 pb-20 md:pb-0">{children}</main>
+                </div>
               </div>
-            </div>
-            <MobileTabBar />
-          </LeadWorkspaceProvider>
-        </ObjectWorkspaceProvider>
+              <MobileTabBar />
+            </LeadWorkspaceProvider>
+          </ObjectWorkspaceProvider>
+        </DemoRoleProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

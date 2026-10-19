@@ -2,18 +2,22 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ChevronsUpDown, Plus, Search } from 'lucide-react'
+import { Plus, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { currentUser } from '@/lib/data'
 import { Logo } from './logo'
-import { isActive, navItems } from './nav-items'
+import { isActive, getNavigationForRole } from './nav-items'
 import { useLeadWorkspace } from '@/components/leads/lead-workspace'
+import { DemoRoleSelect } from './demo-role-select'
+import { useDemoRole } from './demo-role-provider'
 
 export function Sidebar() {
   const pathname = usePathname()
   const { leads } = useLeadWorkspace()
+  const { role } = useDemoRole()
   const recent = leads.slice(0, 5)
   const newLeadCount = leads.filter((lead) => lead.status === 'new').length
+  const visibleNavItems = getNavigationForRole(role)
 
   return (
     <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r bg-sidebar md:flex">
@@ -41,7 +45,7 @@ export function Sidebar() {
       </div>
 
       <nav aria-label="Основная навигация" className="mt-4 flex flex-col gap-0.5 px-3">
-        {navItems.map((item) => {
+        {visibleNavItems.map((item) => {
           const active = isActive(pathname, item.href)
           const Icon = item.icon
           const badge = item.href === '/leads' ? newLeadCount : undefined
@@ -93,19 +97,16 @@ export function Sidebar() {
       </div>
 
       <div className="border-t p-3">
-        <button
-          type="button"
-          className="flex w-full items-center gap-2.5 rounded-lg p-1.5 text-left transition-colors hover:bg-sidebar-accent"
-        >
+        <div className="flex w-full items-center gap-2.5 rounded-lg p-1.5 text-left">
           <span className="flex size-8 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
             {currentUser.initials}
           </span>
-          <span className="flex min-w-0 flex-col">
+          <div className="flex min-w-0 flex-1 flex-col">
             <span className="truncate text-sm font-medium">{currentUser.name}</span>
             <span className="truncate text-xs text-muted-foreground">{currentUser.agency}</span>
-          </span>
-          <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" aria-hidden="true" />
-        </button>
+            <DemoRoleSelect />
+          </div>
+        </div>
       </div>
     </aside>
   )
